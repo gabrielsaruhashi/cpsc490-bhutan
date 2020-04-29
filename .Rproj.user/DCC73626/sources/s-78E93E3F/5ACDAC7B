@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1556311042728.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "5ACDAC7B",
+    "lastKnownWriteTime" : 1555990282,
+    "last_content_update" : 1556311804036,
+    "path" : "~/Yale/S2019/SDS230/Exam2/S&DS230_Exam2.Rmd",
+    "project_path" : null,
+    "properties" : {
+        "cursorPosition" : "90,7",
+        "last_setup_crc32" : "78E93E3F214197e6",
+        "scrollLine" : "80"
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_markdown"
+}

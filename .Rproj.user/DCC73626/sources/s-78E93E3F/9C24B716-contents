@@ -1,0 +1,68 @@
+---
+title: "analysis"
+author: "Gabriel Saruhashi"
+date: "4/26/2019"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r}
+library("chron")
+df_march <- read.csv("./march/HHCC_EmergencyTrip-1stMar2019-to-31stMar2019.csv")
+df_april <- read.csv("./february/HHCC_EmergencyTrip-July2018-to-Feb2019.csv")
+df_victims <- read.csv("./victims/VICTIMDETAILS_1-JULY-18-TO-1-APR-19.csv") 
+dim(df_victims)
+
+# formatting 
+#df_victims$HospitalArrivalDateTime < as.chron(as.character(df_victims$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+
+# combining datasets
+df <- rbind(df_march, df_april)
+str(df)
+
+
+# df$TripAssignedDateTime <- as.chron(as.character(df$TripAssignedDateTime), "%m/%d/%Y %H:%M")
+# df$TripStartDateTime <- as.chron(as.character(df$TripStartDateTime), "%m/%d/%Y %H:%M")
+# 
+# # Arrival
+# df$SceneArrivalDateTime <- as.chron(as.character(df$SceneArrivalDateTime), "%m/%d/%Y %H:%M")
+# df$ScenedepartureDateTime <- as.chron(as.character(df$ScenedepartureDateTime), "%m/%d/%Y %H:%M")
+# 
+# df$HospitalArrivalDateTime <- as.chron(as.character(df$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+
+# Merge victim dataset
+df <- merge(df, df_victims, by=c("AmbulanceNo", "HospitalArrivalDateTime"))
+dim(df)
+
+write.csv(temp, "merged_patient_trips.csv")
+```
+
+```{r}
+Sys.setenv(JAVA_HOME="/usr/bin/Java")
+
+library(RH2)
+
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+names(df_gps)[names(df_gps) == "From"] <- "TripStartDateTime"
+
+#head(df_gps)
+#head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+
+#df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+
+sqldf("SELECT * FROM df_dispatch
+                LEFT OUTER JOIN df_gps
+                ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND (df_dispatch.TripStartDateTime BETWEEN df_gps.TripStartDateTime - INTERVAL '15' MINUTE AND df_gps.TripStartDateTime + INTERVAL '15' MINUTE)")
+```
+

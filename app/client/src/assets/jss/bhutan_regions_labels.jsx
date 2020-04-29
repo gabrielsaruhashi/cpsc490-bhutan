@@ -1,0 +1,22 @@
+const dzongkhagToLabel = {
+  Bumthang: "BT.BU",
+  Chukha: "BT.CK",
+  Tsirang: "BT.CR",
+  Dagana: "BT.DA",
+  Gasa: "BT.GA",
+  Sarpang: "BT.GE",
+  Haa: "BT.HA",
+  Lhuntse: "BT.LH",
+  Mongar: "BT.MO",
+  Paro: "BT.PR",
+  Pemagatshel: "BT.PM",
+  Punakha: "BT.PN",
+  Samtse: "BT.SM",
+  Samdrup: "BT.SJ",
+  Zhemgang: "BT.SG",
+  Trashigang: "BT.TA",
+  Thimphu: "BT.TM",
+  Trongsa: "BT.TO",
+  Trashiyangtse: "BT.TY",
+  Wangdue: "BT.WP"
+};

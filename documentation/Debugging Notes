@@ -1,0 +1,6 @@
+Debugging To-do List: 
+
+using the dispatch dataset alone as opposed to dispatch+victim merged yields 164 extra results in df_final
+  why?? doesn't make sense bc merging w victim doesn't affect the fields that are used in later operations.
+  
+  
