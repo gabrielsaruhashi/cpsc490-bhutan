@@ -8,7 +8,7 @@ We consider two time periods because emergency demand is known to follow a circa
 
 ## App
 
-The backend and frontend of our application
+The backend and frontend of our dashboard application
 
 ## Scraping
 
@@ -30,46 +30,12 @@ Output:
 
 - 3034 emergency response records (38.4% of matches)
 
+Here you can find the Flask server as well that enqueues crawl requests.
+
 ## Preprocessed Data
 
 Merged data after preprocessing
 
 ## Analysis
 
-All the statistical analysis performed on the preprocessed data
-
-# TODO
-
-## Backend
-
-- [x] Setup python backend to automate scraping
-- [ ] Setup actual cron-like schedule job
-
-## Frontend
-
-- [x] Discovery why return trips all have same lat. Once I figure that out, plot on Kepler the appropriate return trip
-- [x] Build the maps and static charts on the frontend
-- [x] Add Kepler map
-- [x] Setup architecture of frontend
-- [x] Setup dummy navbar for reference
-- [x] Override default font (CircularStd)
-- [ ] Add filter for summary according to month
-- [ ] Add icons to cards
-- [ ] Add kepler map to menu (add react router and set up routes)
-- [ ] Customer development with stakeholders
-      <<<<<<< HEAD
-- [ ] # Functionality to create custom grids and export data (fishnet ArcGIS)
-  > > > > > > > cdd88f6b67081a8ac9139edf4706e6121a3c15ef
-
-## Analysis
-
-- [ ] Finish plotting stuff for paper
-- [ ] Plot % of response time that hit goal
-
-## Optimization
-
-- [x] Literature review for paper
-- [x] Travel Time
-- [x] Create GU on ArcGIS
-- [x] Interpolations for every GU
-- [ ] Draw out mathematical model
+All the statistical analysis performed on the preprocessed data. Here you can find the machine learning models as well.
