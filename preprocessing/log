@@ -1,0 +1,3 @@
+LOG
+1. When there are multiple potential return trips that are one after the other, check which one is the most plausible. Right now I am just getting the record that is right under the record for outgoing trip - some of those are very short, which might indicate it is a 'fake return trip' 
+2. Stop grouping by date

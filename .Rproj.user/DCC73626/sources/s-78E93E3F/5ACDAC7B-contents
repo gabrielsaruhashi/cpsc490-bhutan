@@ -1,0 +1,324 @@
+---
+title: "Exam 2"
+author: "J Reuning-Scherer"
+date: "null"
+output:
+  pdf_document: default
+  html_document: default
+subtitle: S&DS 230/530 - Due by 11:59pm, Monday April 22, 2019
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 999)
+```
+
+This exam contains 6 questions.   You should modify this markdown file and upload the Rmarkdown File and a knitted PDF to CANVAS.
+
+This exam has no time limit, is open note, open book, open internet.
+
+Each question is worth 17 points, except for question 6 which is 15 points.
+
+**You may NOT work with any other person on this exam, and you may not ask other students questions.**
+
+You may ask TA's or myself any questions you have about this exam.
+
+All questions review material we've covered in class and on the final four homework assignments.
+
+**IMPORTANT - remove every instance of `eval = F` in the provided chunks below before knitting.**
+
+*****************************
+
+All of the questions on this exam relate to data on firearm fatalities by state as well as other legislative and demographic information by state.  If you're curious, the data is drawn from
+
+https://www.statefirearmlaws.org/table.html
+https://www.statefirearmlaws.org/glossary.html
+https://en.wikipedia.org/wiki/List_of_U.S._states_by_income
+https://www.cdc.gov/nchs/pressroom/sosmap/firearm_mortality/firearm.htm
+
+The code below will load necessary libraries and functions. 
+```{r, message=FALSE}
+library(car)
+library(leaps)
+library(lubridate)
+library(rvest)
+library(olsrr)
+library(corrplot)
+library(leaps)
+source("http://www.reuningscherer.net/s&ds230/Rfuncs/regJDRS.txt")
+```
+
+####1)  Data retrieval and creation
+
+Modify the code below as indicated.
+```{r}
+#Get dataset
+guns <- read.csv("http://reuningscherer.net/s&ds230/data/Guns_2017.csv", as.is = TRUE)
+#Get dimension, top six rows, and variable names of guns
+dim(guns)
+head(guns, 6)
+names(guns)
+
+```
+Here is information on some of the variables
+
+* rate_16 : firearm fatality rate per 100,000 in 2016
+* median.in : median income in 2015 per household (dollars)
+* lawtotal : total number of laws regulating firearms in a state
+* LawRanking : ranking (1 = best, 50= worst) from Giffords Center on gun laws in the state
+* GiffordsGrade : Grading of gun laws in a state (A, A-, B+, etc.)
+
+The other variables you can learn about [HERE](https://www.statefirearmlaws.org/resources) (you have to download the excel file and look at the codebook sheet)
+
+Change the code below to accomplish the following - scrape data from http://www.gunsandammo.com/second-amendment/best-states-for-gun-owners-2017/ to get state rankings of gun friendliness according to Guns and Ammo Magazine.
+
+```{r}
+#Define the URL of interest
+url <- "http://www.gunsandammo.com/second-amendment/best-states-for-gun-owners-2017/"
+
+#Read the HTML code from website into a new object
+webpage <- read_html(url) 
+
+#Get rankings and strip off extraneous information.   Sort rankings so that they are in state alphabetical order so that you can merge this information onto the guns object.  Use whatever code you like for this.  The argument you want to use in the html_nodes function is 'p strong'
+
+#Code here.   End up with code below
+alldatHTML <- html_nodes(webpage,'p strong')
+allData <- html_text(alldatHTML)
+
+# 1) strip off extraneous information
+allData <- trimws(allData[allData != c(" ", "*Editor's note:")], "left")
+# 2) "51. Washington DC" is not a state
+allData <- allData[allData != "51. Washington DC"]
+
+# inspired by: https://stackoverflow.com/questions/8299978/splitting-a-string-on-the-first-space
+rexp <- "^(\\w+)\\s?(.*)$"
+rankings <- data.frame(state=gsub("[.]\\s","", sub(rexp,"\\2",allData)), 
+                       rank=as.integer(sub(rexp,"\\1",allData)))
+
+rankings <- rankings[order(rankings$state), ]
+# getting head and dimensions
+head(rankings)
+dim(rankings)
+
+#Create ammoRank variable.  This should be an INTEGER variable.
+guns$ammoRank <- rankings$rank
+
+```
+
+Change the code below to create a new variables called `Grade` on the guns object as indicated.  Also modify `median.inc` as indicated, and create a variable called `loglaws`.
+
+```{r}
+
+#Create new variable called Grade such that GiffordsGrade is recoded as follows:
+#  Any form of A or B becomes 'AB'
+#  Any form of C or D becomes 'CD'
+#  F stays at F
+
+guns$Grade <- recode(guns$GiffordsGrade, "c('A', 'A-', 'B', 'B+') = 'AB';  
+                     c('C', 'C-', 'C+', 'D', 'D-') = 'CD';",  as.factor=TRUE)
+
+#Change median income so that it is in thousands of dollars, not dollars.
+guns$median.inc <- guns$median.inc / 1000
+
+#Create a variable that is the natural log of lawtotal.
+guns$loglaws <- log(guns$lawtotal)
+
+```
+
+####2)  One Way ANOVA
+
+The goal here is compare firearm deaths rates in 2016 based on your newly created grading system in `Grade`. Modify the code below as indicated to create the specified objects.  You'll notice I've filled in yes/no questions to help you get the format correct - however, the specific values of 'yes' or 'no' are not necessarily correct.
+
+```{r}
+#Create a boxplot of rate_16 by Grade.  Add a title and change the color. 
+boxplot(guns$rate_16 ~ guns$Grade, 
+        main="Firearm fatality rate per 100,000 by Grade", col="Green")
+
+#Calculate the standard deviation of rate_16 for each grade group
+(sds <- tapply(guns$rate_16, guns$Grade, sd))
+
+#Get ratio of max to min sample standard deviation by Grade and round to one decimal place.
+round(max(sds)/min(sds),1)
+
+#Based on previous calculation, is the equal variance assumption of ANOVA reasonably met?  yes or no
+(q104 <- "yes")
+
+#Calculate a one-way ANOVA comparing mean rate_16 by Grade.  Use the aov() function.   
+(mod1 <- aov(guns$rate_16 ~ guns$Grade))
+
+#Get summary of mod1
+summary(mod1)
+
+#Create Tukey confidence intervals for all pairs of groups. 
+tukey_ci <- TukeyHSD(mod1)
+
+#Plot Tukey Confidence intervals.
+plot(tukey_ci, las=1)
+
+#Use the myResPlots2 function to evaluate model assumptions for mod1.
+myResPlots2(mod1)
+#Do the residuals seem approximately normally distributed?
+#Does the plot of fits vs. residuals indicate any model lack of fit?
+(q110 <- c("yes","no"))
+
+#Perform a Kruskal-Wallis test to compare rate_16 based on Grade
+kruskal.test(guns$rate_16 ~ guns$Grade)
+
+```
+
+####3)  Box Cox Transformations
+
+The goal here is fit a model predicting the total laws in a state regulating guns based on median income and the Guns and Ammo ranking `ammoRank`, perform a Box-Cox analysis, determine an appropriate transformation.
+
+```{r}
+#Fit a regression predicting lawtotal based on median.inc and ammoRank
+(mod2 <-  lm(guns$lawtotal ~ guns$median.inc + guns$ammoRank))
+
+#Get summary information for model q211
+summary(mod2)
+
+#Run a Box Cox procedure on model q211
+trans1 <- boxCox(mod2)
+trans1$x[which.max(trans1$y)]
+
+#What is a reasonable suggested value for lambda?  Replace 'lambda' below with a number.
+# Boxcox suggests 0.1010101, but given that it's almost 0, it is better to do
+# natural logs.
+(q214 <- c(0.1010101))
+
+#Fit a regression model predicting the transformed version of lawtotal suggested by the Box Cox Transformation.
+#  Again, median.inc and ammmoRank are the two predictors.
+# logs work well for almost 0
+trans_lawtotal <- log(guns$lawtotal)
+(mod3 <- lm(trans_lawtotal ~ guns$median.inc + guns$ammoRank))
+
+#Get summary information for model mod3.
+summary(mod3)
+#Are both predictors statistically significant at the 0.05 level?
+(q217 <- c("yes"))
+
+#According to the model mod3, as ammoRank increases, does the number of laws increase or decrease? 
+(q218 <- c("increase"))
+
+#use myResPlots2 to get residual plots for this model.
+myResPlots2(mod3, "Model for transformed lawtotal")
+```
+
+#### 4)Correlation and Scatterplots
+
+The goal here is to create correlation plots and scatterplots (matrix plots) for the continuous variables in `guns`.
+
+```{r fig.height = 5, fig.width = 5}
+
+#create an object q301 that only has the following columns of guns : rate_16, median.inc, loglaws, LawRanking, ammoRank.
+q301 <- subset(guns, select=c("rate_16", "median.inc", "loglaws", "LawRanking", "ammoRank"))
+
+#Get correlations for the variables in q301 and round to two decimal places.
+cor1 <- cor(q301, use="pairwise.complete.obs")
+#round cor1 to 2 decimal places and display the result.  
+(round(cor1, 2))
+  
+
+#Create an object that has the results of cor.mtest for the columns of q301.  Use 95% CI.
+(q303 <- cor.mtest(q301, conf.level = .95))
+
+#Use corrplot.mixed to display confidence ellipses, pairwise correlation values, and put on 'X' over non-significant values for the columns in q302.
+corrplot.mixed(cor1, 
+               lower.col="black", 
+               upper = "ellipse",
+               tl.col = "black", 
+               number.cex=.7, 
+               tl.pos = "lt", 
+               tl.cex=.7, 
+               p.mat = q303$p, 
+               sig.level = .05)
+
+#Are the correlations you observe relatively strong or relatively weak?
+(q305 <- c("relatively strong"))
+
+#Use the parisJDRS() function on the columns of q301.
+(q306 <- pairsJDRS(q301))
+
+```
+
+#### 5) Perform Best Subsets Regression
+
+The goal here is to perform best subsets regression to predict `rate_16`, determine the best model according to the Bayesian Information Criteria (BIC), and evaluate the model fit.
+
+
+```{r}
+
+names(guns)
+#Create a dataframe guns2 from guns that removes state, code, rate_05, lawtotal, GiffordsGrade, Grade.
+guns2 <- guns[, !(names(guns) %in% c("state", "code", "rate_05", 
+                                     "lawtotal", "GiffordsGrade", "Grade"))]
+
+#Run bests subsets to predict rate_16 based on all other columns in guns2 - use regsubsets() function.
+(q401 <- regsubsets(rate_16 ~ ., data = guns2, nvmax = length(names(guns2))))
+
+#Get summary information for q401
+q402 <- summary(q401)
+
+#Get the which matrix from the summary in the previous question.
+(q403 <-  q402$which)
+
+#If you were to fit a model with only one predictor, which predictor would this be? CHANGE TEXT BELOW.
+(q404 <- c("loglaws"))
+
+# Get the best model according to the Bayesian Information Criteria (BIC)
+(q405 <- which.min(q402$bic))
+
+#Which variables are in this model?  Can code from names or use quoted string.
+names(guns2)[q402$which[q405,]][-1]
+
+#Fit the model suggested by BIC and save to q407
+guntemp <- guns2[, q402$which[q405,]]
+(q407 <- lm(rate_16 ~ .,data=guntemp))
+
+#Get summary info for model q407
+summary(q407)
+
+#Run myResPlots2 on model q407
+myResPlots2(q407, "Model for firearm fatality rate")
+#Are the model assumptions reasonably met?
+(q409 <- c("yes"))
+```
+
+
+####6) ANCOVA
+
+Part 5) showed that one of the main predictors of firearm death rates is log(Number of Gun Laws).  We might wonder what predicts the number of gun laws in a state.  
+
+The goal here is to model and visually assess the predictive ability of median income and whether or not a state has a stand your ground law (`nosyg`) on log(Number of Gun Laws).
+
+```{r}
+
+#Fit a model that predicts loglaws based on median.inc, nosyg AND the interaction of median.inc and nosyg.  Save model as q501.
+q501 <- lm(loglaws ~ median.inc*nosyg, data=guns2)
+
+#Get summary information for model q501
+summary(q501)
+#Run the Anova() function on model q501 - be sure to request type III errors.
+Anova(q501, type=3)
+#Get coefficients from model q501
+(q504 <- coef(q501))
+
+#Make a plot of loglaws vs median income with different colors for each level of nosyg.  Then add the predicted regression lines (one for each level of nosyg).  Add plot labels, titles, a legend, etc.
+plot(loglaws ~ median.inc, data=guns2, 
+     col=factor(nosyg), pch=16, cex=.5, 
+     main="Plot of median income by number of laws", 
+     xlab="Median income (thousands of dollars)",
+     ylab="Log transformed # total laws")
+legend("topleft", col=1:2, legend=levels(factor(guns2$nosyg)), pch=16)
+
+abline(a=q504[1], b=q504[2], col="black", lwd=3)
+abline(a=q504[1]+q504[3], b=q504[2] + q504[4], col="Red", lwd = 3)
+
+
+```
+
+
+THE END
+
+
+

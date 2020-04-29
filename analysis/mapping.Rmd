@@ -1,0 +1,115 @@
+---
+title: |
+  | Mapping Ambulance Response Events  
+  | Bhutan, 2018-2019
+
+author: "Mila Dorji and Gabriel Saruhashi"
+date: "7/24/2019"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Abstract
+
+This is a map of most of the ambulance response events in Bhutan from October 2018 to June 2019, color-coded based on the driving time of the ambulance to arrive at the scene.
+
+To-do: fix a few edge cases and obtain the last section of response events that are not already properly caught by our scripts
+
+
+Also, R Markdown is pretty! :) 
+
+## Map
+
+```{r map, echo=FALSE, results = 'hide', message=FALSE}
+library(maps)
+library(ggmap)
+library(tidyr)
+library(lubridate)
+library(dplyr)
+library(data.table)
+library(ggrepel)
+library(tidyverse)
+library(ggplot2)
+
+# retrieve map of Bhutan from google maps API 
+register_google(key = "AIzaSyAerShbX3n97Dni1XDpeOqHWC1dIjaq8pc") 
+world_map <- map_data("world")
+Bhutan <- subset(world_map, world_map$region=="Bhutan")
+
+# read and format merged data outputted by analysis.Rmd
+df_merged <- read.csv("../preprocessed_data/merged_ktracker_30min.csv",header = TRUE, as.is =  TRUE)
+df_outgoing_trip <- data.frame(df_merged$OutgoingTrip_TripDuration, df_merged$OutgoingTrip_LatLngEnd)
+colnames(df_outgoing_trip)[colnames(df_outgoing_trip)=="df_merged.OutgoingTrip_TripDuration"] <- "TripDuration"
+colnames(df_outgoing_trip)[colnames(df_outgoing_trip)=="df_merged.OutgoingTrip_LatLngEnd"] <- "latlong"
+df_outgoing_trip <- separate(data = df_outgoing_trip, col = latlong, into = c("Latitude","Longitude"), sep = " ")
+df_outgoing_trip$Latitude = as.numeric(df_outgoing_trip$Latitude)
+df_outgoing_trip$Longitude = as.numeric(df_outgoing_trip$Longitude)
+df_outgoing_trip$TripDuration = as.numeric(df_outgoing_trip$TripDuration)
+
+# cap trip durations > 120 minutes to 120 for ease of visual analysis
+df_outgoing_trip$TripDuration <- pmin(df_outgoing_trip$TripDuration, 120)
+
+# plot gps endpoints onto map and color code by trip duration
+map <- get_map(location = 'Bhutan', zoom = 8, maptype = 'roadmap', size = c(640,640), scale=4)
+#Trip_Duration <- df_outgoing_trip$TripDuration
+master_map <- ggmap(map, maptype = 'terrain', extent = 'device') + geom_point(data=df_outgoing_trip, 
+             aes(x=Longitude, y=Latitude, color=df_outgoing_trip$TripDuration), size=1, alpha=I(0.6)) + theme(legend.position = "bottom") + scale_colour_gradientn(colours = c('lightyellow1', 'red3'))
+
+master_map + guides(color = guide_colorbar(title = "Trip Duration (minutes)", title.position = "bottom", barwidth = 10))
+
+col4 = "#CC0000"
+
+
+
+# ggmap(map, maptype = 'terrain') + stat_density2d(
+#     aes(x = Longitude, y = Latitude, fill = ..level.., alpha = 0.25),
+#     size = 0.01, bins = 50, data = separated,
+#     geom = "polygon"
+#   ) +
+#   geom_point(aes(x = Longitude, y = Latitude, stroke = 2), color=col4, data = separated, size =1.5) + 
+#     
+#   geom_label_repel(
+#     aes(x=Longitude, y=Latitude, label = 'label'),
+#     data=separated,
+#     family = 'separated$TripDuration', 
+#     size = 3, 
+#     box.padding = 0.2, point.padding = 0.3,
+#     segment.color = 'grey50') 
+
+
+# trying to create a heatmap based on latlongs and tripdurations (strong areas correspond to length of time, not volume) 
+
+# library(ggplot2)
+# library(ggthemes)
+# library(viridis) # devtools::install_github("sjmgarnier/viridis)
+# library(ggmap)
+# library(scales)
+# library(grid)
+# library(dplyr)
+# library(gridExtra)
+# 
+# dat$cut <- cut(dat$score, breaks=c(0,10,20,30,60,90,150), labels=sprintf("Response Time %d-%d Minutes",c(0,10,20, 30,60,90), c(10,20,30,60,90,150)))
+# 
+# thimphu <- get_map(location="thimphu, bhutan", source="google", color="bw", crop=FALSE, zoom=7, maptype = 'roadmap')
+# 
+# gg <- ggmap(orlando)
+# gg <- gg + stat_density2d(data=dat, aes(x=lon, y=lat, fill=..level.., alpha=..level..),
+#                           geom="polygon", size=0.01, bins=5)
+# gg <- gg + scale_fill_viridis()
+# gg <- gg + scale_alpha(range=c(0.2, 0.4), guide=FALSE)
+# gg <- gg + coord_map()
+# gg <- gg + facet_wrap(~cut, ncol=3)
+# gg <- gg + labs(x=NULL, y=NULL, title="Score Distribution Across All Schools\n")
+# gg <- gg + theme_map(base_family="Helvetica")
+# gg <- gg + theme(plot.title=element_text(face="bold", hjust=1))
+# gg <- gg + theme(panel.margin.x=unit(1, "cm"))
+# gg <- gg + theme(panel.margin.y=unit(1, "cm"))
+# gg <- gg + theme(legend.position="right")
+# gg <- gg + theme(strip.background=element_rect(fill="white", color="white"))
+# gg <- gg + theme(strip.text=element_text(face="bold", hjust=0))
+# gg
+
+```

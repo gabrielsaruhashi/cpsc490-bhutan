@@ -1,0 +1,512 @@
+library("chron")
+df_march <- read.csv("./march/HHCC_EmergencyTrip-1stMar2019-to-31stMar2019.csv")
+df_april <- read.csv("./february/HHCC_EmergencyTrip-July2018-to-Feb2019.csv")
+df_victims <- read.csv("./victims/VICTIMDETAILS_1-JULY-18-TO-1-APR-19.csv")
+dim(df_victims)
+# formatting
+#df_victims$HospitalArrivalDateTime < as.chron(as.character(df_victims$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+# combining datasets
+df <- rbind(df_march, df_april)
+str(df)
+# df$TripAssignedDateTime <- as.chron(as.character(df$TripAssignedDateTime), "%m/%d/%Y %H:%M")
+# df$TripStartDateTime <- as.chron(as.character(df$TripStartDateTime), "%m/%d/%Y %H:%M")
+#
+# # Arrival
+# df$SceneArrivalDateTime <- as.chron(as.character(df$SceneArrivalDateTime), "%m/%d/%Y %H:%M")
+# df$ScenedepartureDateTime <- as.chron(as.character(df$ScenedepartureDateTime), "%m/%d/%Y %H:%M")
+#
+# df$HospitalArrivalDateTime <- as.chron(as.character(df$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+# Merge victim dataset
+df <- merge(df, df_victims, by=c("AmbulanceNo", "HospitalArrivalDateTime"))
+dim(df)
+write.csv(temp, "merged_patient_trips.csv")
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+head(df_dispatch)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+head(df_dispatch)
+df <- merge(df, df_dispatch, by=c("AmbulanceNo", "HospitalArrivalDateTime"))
+dim(df)
+df_gps <- read.csv("GPS.csv")
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+head(df_dispatch)
+df <- merge(df, df_dispatch, by=c("AmbulanceNo", "HospitalArrivalDateTime"))
+dim(df)
+df_gps <- read.csv("GPS.csv")
+head(gps)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+head(df_dispatch)
+df <- merge(df, df_dispatch, by=c("AmbulanceNo", "HospitalArrivalDateTime"))
+dim(df)
+df_gps <- read.csv("GPS.csv")
+head(df_gps)
+head(df_dispatch)
+head(df_gps)
+do.call(rbind, strsplit(df_gps$Name, ' (?=[^-]+$)', perl=TRUE))
+do.call(rbind, strsplit(df_gps$Name, ' (?=[^\-]+$)', perl=TRUE))
+do.call(rbind, strsplit(df_gps$Name, ' (?=[^-]+$)', perl=TRUE))
+df_gps$Name
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv")
+str(df_gps)
+head(df_gps)
+do.call(rbind, strsplit(df_gps$Name, ' (?=[^-]+$)', perl=TRUE))
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+str(df_gps)
+head(df_gps)
+do.call(rbind, strsplit(df_gps$Name, ' (?=[^-]+$)', perl=TRUE))
+do.call(rbind, strsplit(df_gps$Name, ' (?=[^-]+$)', perl=TRUE))
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+str(df_gps)
+head(df_gps)
+do.call(rbind, strsplit(df_gps$Name, ",(?=[^-]+$)", perl=TRUE))
+do.call(rbind, strsplit(df_gps$Name, ",(?=[^-]+$)", perl=TRUE))
+do.call(rbind, strsplit(df_gps$Name, ",(?=[^-]+$)", perl=TRUE))
+do.call(rbind, strsplit(df_gps$Name, ",(?=[^-]+)", perl=TRUE))
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+str(df_gps)
+head(df_gps)
+do.call(rbind, strsplit(df_gps$Name, ",(?=[^-]+)", perl=TRUE))
+do.call(rbind, strsplit(df_gps$Name, ",(?=[^-]+)", perl=TRUE))
+do.call(rbind, strsplit(df_gps$Name, perl=TRUE))
+do.call(rbind, strsplit(df_gps$Name, "\\
+s", perl=TRUE))
+do.call(rbind, strsplit(df_gps$Name, "\\s", perl=TRUE))
+AmbulanceNo <- strsplit(df_gps$Name, "\\s", perl=TRUE))[[1]]
+AmbulanceNo <- strsplit(df_gps$Name, "\\s", perl=TRUE)[[1]]
+AmbulanceNo
+AmbulanceNo <- strsplit(df_gps$Name, "\\s", perl=TRUE)[[, 1]]
+\\s", perl=TRUE)[[, 1]]
+AmbulanceNo <- strsplit(df_gps$Name, "\\s", perl=TRUE)[[, 1]]
+strsplit(df_gps$Name, "\\s", perl=TRUE)
+AmbulanceNo <- do.call(rbind, strsplit(df_gps$Name, "\\s", perl=TRUE))
+AmbulanceNo <- sub(rexp,"\\1",df_gps$Name)
+sub(rexp,"\\1",df_gps$Name)
+str(df_gps)
+sub(rexp,"\\1",df_gps$Name)
+gsub(rexp,"\\1",df_gps$Name)
+df_gps$Name
+gsub(rexp,"\\1", df_gps$Name)
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 999)
+gsub("[.]\\s","", sub(rexp,"\\2",allData))
+knitr::opts_chunk$set(echo = TRUE)
+options(scipen = 999)
+library(car)
+library(leaps)
+library(lubridate)
+library(rvest)
+library(olsrr)
+library(corrplot)
+library(leaps)
+source("http://www.reuningscherer.net/s&ds230/Rfuncs/regJDRS.txt")
+#Get dataset
+guns <- read.csv("http://reuningscherer.net/s&ds230/data/Guns_2017.csv", as.is = TRUE)
+#Get dimension, top six rows, and variable names of guns
+dim(guns)
+head(guns, 6)
+names(guns)
+gsub("[.]\\s","", sub(rexp,"\\2",allData))
+Define the URL of interest
+#Define the URL of interest
+url <- "http://www.gunsandammo.com/second-amendment/best-states-for-gun-owners-2017/"
+#Read the HTML code from website into a new object
+webpage <- read_html(url)
+#Get rankings and strip off extraneous information.   Sort rankings so that they are in state alphabetical order so that you can merge this information onto the guns object.  Use whatever code you like for this.  The argument you want to use in the html_nodes function is 'p strong'
+#Code here.   End up with code below
+alldatHTML <- html_nodes(webpage,'p strong')
+allData <- html_text(alldatHTML)
+# 1) strip off extraneous information
+allData <- trimws(allData[allData != c(" ", "*Editor's note:")], "left")
+# 2) "51. Washington DC" is not a state
+allData <- allData[allData != "51. Washington DC"]
+# inspired by: https://stackoverflow.com/questions/8299978/splitting-a-string-on-the-first-space
+rexp <- "^(\\w+)\\s?(.*)$"
+rankings <- data.frame(state=gsub("[.]\\s","", sub(rexp,"\\2",allData)),
+rank=as.integer(sub(rexp,"\\1",allData)))
+rankings <- rankings[order(rankings$state), ]
+# getting head and dimensions
+head(rankings)
+dim(rankings)
+#Create ammoRank variable.  This should be an INTEGER variable.
+guns$ammoRank <- rankings$rank
+sub(rexp,"\\2",allData)
+allData
+df_gps$Name
+sub(rexp,"\\1", df_gps$Name)
+AmbulanceNo <- sub(rexp,"\\2", df_gps$Name)
+sub(rexp,"\\2", df_gps$Name)
+sub(rexp,"\\3", df_gps$Name)
+head(df_gps)
+AmbulanceNo <- strsplit(df_gps$Name, ",(?=[^-]+$)", perl=TRUE)
+AmbulanceNo
+AmbulanceNo <- strsplit(df_gps$Name, ",(?=[^\\s]+$)", perl=TRUE)
+strsplit(df_gps$Name, ",(?=[^\\s]+$)", perl=TRUE)
+strsplit(df_gps$Name, ",(?=[^-]+$)", perl=TRUE)
+strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+x1 =
+lapply(temp, function(l) l[[1]])
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+lapply(temp, function(l) l[[1]])
+unlist(lapply(temp, function(l) l[[1]]))
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+str(df_gps)
+head(df_gps)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+df_gps$AmbulanceNo
+str(df_dispatch)
+install.packages("sqldf")
+sqldf("select * from df_dispatch
+left join df_gps
+on  df_dispatch.AmbulanceNo ==  df_gps.AmbulanceNo")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+str(df_dispatch)
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+str(df_gps)
+head(df_gps)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+sqldf("select * from df_dispatch
+left join df_gps
+on  df_dispatch.AmbulanceNo ==  df_gps.AmbulanceNo")
+head(df_gps)
+head(df_dispatch))
+head(df_dispatch)
+strptime(df_dispatch$TripStartDateTime, format='%B/%d/%y:%H:%M')
+strptime(df_dispatch$TripStartDateTime, format='%B/%d/%y %H:%M')
+df_dispatch$TripStartDateTime
+strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+df_dispatch$TripStartDateTime
+head(strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M'), 2)
+df_dispatch$TripStartDateTime
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+head(df_gps)
+head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_dispatch$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+head(strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M'), 2)
+df_dispatch$TripStartDateTime
+df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+str(df_dispatch)
+install.packages("RH2")
+library(RH2)
+library(RH2)
+library('rJava')
+install.packages("rJava")
+library(RH2)
+library(rJava)
+library(RH2)
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+head(df_gps)
+head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_dispatch$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+knitr::opts_chunk$set(echo = TRUE)
+library("chron")
+df_march <- read.csv("./march/HHCC_EmergencyTrip-1stMar2019-to-31stMar2019.csv")
+df_april <- read.csv("./february/HHCC_EmergencyTrip-July2018-to-Feb2019.csv")
+df_victims <- read.csv("./victims/VICTIMDETAILS_1-JULY-18-TO-1-APR-19.csv")
+dim(df_victims)
+# formatting
+#df_victims$HospitalArrivalDateTime < as.chron(as.character(df_victims$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+# combining datasets
+df <- rbind(df_march, df_april)
+str(df)
+# df$TripAssignedDateTime <- as.chron(as.character(df$TripAssignedDateTime), "%m/%d/%Y %H:%M")
+# df$TripStartDateTime <- as.chron(as.character(df$TripStartDateTime), "%m/%d/%Y %H:%M")
+#
+# # Arrival
+# df$SceneArrivalDateTime <- as.chron(as.character(df$SceneArrivalDateTime), "%m/%d/%Y %H:%M")
+# df$ScenedepartureDateTime <- as.chron(as.character(df$ScenedepartureDateTime), "%m/%d/%Y %H:%M")
+#
+# df$HospitalArrivalDateTime <- as.chron(as.character(df$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+# Merge victim dataset
+df <- merge(df, df_victims, by=c("AmbulanceNo", "HospitalArrivalDateTime"))
+dim(df)
+write.csv(temp, "merged_patient_trips.csv")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+head(df_gps)
+head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_dispatch$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+knitr::opts_chunk$set(echo = TRUE)
+library("chron")
+df_march <- read.csv("./march/HHCC_EmergencyTrip-1stMar2019-to-31stMar2019.csv")
+df_april <- read.csv("./february/HHCC_EmergencyTrip-July2018-to-Feb2019.csv")
+df_victims <- read.csv("./victims/VICTIMDETAILS_1-JULY-18-TO-1-APR-19.csv")
+dim(df_victims)
+# formatting
+#df_victims$HospitalArrivalDateTime < as.chron(as.character(df_victims$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+# combining datasets
+df <- rbind(df_march, df_april)
+str(df)
+# df$TripAssignedDateTime <- as.chron(as.character(df$TripAssignedDateTime), "%m/%d/%Y %H:%M")
+# df$TripStartDateTime <- as.chron(as.character(df$TripStartDateTime), "%m/%d/%Y %H:%M")
+#
+# # Arrival
+# df$SceneArrivalDateTime <- as.chron(as.character(df$SceneArrivalDateTime), "%m/%d/%Y %H:%M")
+# df$ScenedepartureDateTime <- as.chron(as.character(df$ScenedepartureDateTime), "%m/%d/%Y %H:%M")
+#
+# df$HospitalArrivalDateTime <- as.chron(as.character(df$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+# Merge victim dataset
+df <- merge(df, df_victims, by=c("AmbulanceNo", "HospitalArrivalDateTime"))
+dim(df)
+write.csv(temp, "merged_patient_trips.csv")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+head(df_gps)
+head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_dispatch$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+knitr::opts_chunk$set(echo = TRUE)
+library("chron")
+df_march <- read.csv("./march/HHCC_EmergencyTrip-1stMar2019-to-31stMar2019.csv")
+df_april <- read.csv("./february/HHCC_EmergencyTrip-July2018-to-Feb2019.csv")
+df_victims <- read.csv("./victims/VICTIMDETAILS_1-JULY-18-TO-1-APR-19.csv")
+dim(df_victims)
+# formatting
+#df_victims$HospitalArrivalDateTime < as.chron(as.character(df_victims$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+# combining datasets
+df <- rbind(df_march, df_april)
+str(df)
+# df$TripAssignedDateTime <- as.chron(as.character(df$TripAssignedDateTime), "%m/%d/%Y %H:%M")
+# df$TripStartDateTime <- as.chron(as.character(df$TripStartDateTime), "%m/%d/%Y %H:%M")
+#
+# # Arrival
+# df$SceneArrivalDateTime <- as.chron(as.character(df$SceneArrivalDateTime), "%m/%d/%Y %H:%M")
+# df$ScenedepartureDateTime <- as.chron(as.character(df$ScenedepartureDateTime), "%m/%d/%Y %H:%M")
+#
+# df$HospitalArrivalDateTime <- as.chron(as.character(df$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+# Merge victim dataset
+df <- merge(df, df_victims, by=c("AmbulanceNo", "HospitalArrivalDateTime"))
+dim(df)
+write.csv(temp, "merged_patient_trips.csv")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+head(df_gps)
+head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_dispatch$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+dim(temp)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+dim(temp)
+length(temp)
+length(df_gps$Name)
+length(temp)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+head(df_gps)
+head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+str(df_dispatch)
+sqldf("select * from df_dispatch
+left join df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND df_dispatch.TripStartDateTime == df_gps.from ")
+sqldf("select * from df_dispatch
+left join df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND df_dispatch.TripStartDateTime = df_gps.from ")
+str(df_gps)
+sqldf("select * from df_dispatch
+left join df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND df_dispatch.TripStartDateTime = df_gps.FROM ")
+sqldf("select * from df_dispatch
+left join df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNodf_gps.FROM ")
+sqldf("select * from df_dispatch
+left join df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo  ")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+head(df_gps)
+head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+str(df_gps)
+sqldf("select * from df_dispatch
+left join df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo ")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+head(df_gps)
+head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+str(df_gps)
+sqldf("select * from df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND df_dispatch.TripStartDateTime = df_gps.FROM ")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+#head(df_gps)
+#head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+str(df_gps)
+sqldf("select * from df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND df_dispatch.TripStartDateTime = df_gps.FROM ")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+#head(df_gps)
+#head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+str(df_gps)
+sqldf("select * from df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+#head(df_gps)
+#head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+str(df_gps)
+sqldf("select * from df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo ")
+sqldf("select * from df_dispatch")
+sqldf("select * from df_dispatch")
+sqldf("select * from df_dispatch;")
+sqldf("SELECT * FROM df_dispatch")
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+library(sqldf)
+sqldf("SELECT * FROM df_dispatch")
+sqldf("select * from df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND df_dispatch.TripStartDateTime = df_gps.FROM ")
+sqldf("select * from df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND df_dispatch.TripStartDateTime = df_gps.From ")
+sqldf("SELECT * FROM df_dispatch")
+sqldf("SELECT * FROM df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo ")
+str(df_gps)
+sqldf("SELECT * FROM df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND df_dispatch.TripStartDateTime = df_gps.From")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+names(df_gps)[names(df_gps) == "From"] <- "TripStartDateTime"
+#head(df_gps)
+#head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+str(df_gps)
+sqldf("SELECT * FROM df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND df_dispatch.TripStartDateTime = df_gps.TripStartDateTime")
+str(df_gps)
+sqldf("SELECT * FROM df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.TripStartDateTime = df_gps.TripStartDateTime")
+knitr::opts_chunk$set(echo = TRUE)
+library("chron")
+df_march <- read.csv("./march/HHCC_EmergencyTrip-1stMar2019-to-31stMar2019.csv")
+df_april <- read.csv("./february/HHCC_EmergencyTrip-July2018-to-Feb2019.csv")
+df_victims <- read.csv("./victims/VICTIMDETAILS_1-JULY-18-TO-1-APR-19.csv")
+dim(df_victims)
+# formatting
+#df_victims$HospitalArrivalDateTime < as.chron(as.character(df_victims$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+# combining datasets
+df <- rbind(df_march, df_april)
+str(df)
+# df$TripAssignedDateTime <- as.chron(as.character(df$TripAssignedDateTime), "%m/%d/%Y %H:%M")
+# df$TripStartDateTime <- as.chron(as.character(df$TripStartDateTime), "%m/%d/%Y %H:%M")
+#
+# # Arrival
+# df$SceneArrivalDateTime <- as.chron(as.character(df$SceneArrivalDateTime), "%m/%d/%Y %H:%M")
+# df$ScenedepartureDateTime <- as.chron(as.character(df$ScenedepartureDateTime), "%m/%d/%Y %H:%M")
+#
+# df$HospitalArrivalDateTime <- as.chron(as.character(df$HospitalArrivalDateTime), "%m/%d/%Y %H:%M")
+# Merge victim dataset
+df <- merge(df, df_victims, by=c("AmbulanceNo", "HospitalArrivalDateTime"))
+dim(df)
+write.csv(temp, "merged_patient_trips.csv")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+names(df_gps)[names(df_gps) == "From"] <- "TripStartDateTime"
+#head(df_gps)
+#head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+sqldf("SELECT * FROM df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.TripStartDateTime = df_gps.TripStartDateTime")
+str(df_dispatch)
+str(df_gps)
+str(df_dispatch)
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+names(df_gps)[names(df_gps) == "From"] <- "TripStartDateTime"
+#head(df_gps)
+#head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+#df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+str(df_dispatch)
+str(df_gps)
+sqldf("SELECT * FROM df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND df_dispatch.TripStartDateTime = df_gps.TripStartDateTime")
+sqldf("SELECT * FROM df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND df_dispatch.TripStartDateTime = df_gps.TripStartDateTime")
+sqldf("SELECT * FROM df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND (df_dispatch.TripStartDateTime BETWEEN df_gps.TripStartDateTime - INTERVAL 15 MINUTE AND df_gps.TripStartDateTime + INTERVAL 15 MINUTE)")
+library(sqldf)
+df_dispatch <- read.csv("Dispatch_Records_July_18_to_March_19.csv")
+df_gps <- read.csv("GPS.csv", as.is = TRUE)
+names(df_gps)[names(df_gps) == "From"] <- "TripStartDateTime"
+#head(df_gps)
+#head(df_dispatch)
+temp <- strsplit(df_gps$Name, "-(?=[^-]+$)", perl=TRUE)
+df_gps$AmbulanceNo <-  unlist(lapply(temp, function(l) l[[1]]))
+#df_dispatch$TripStartDateTime <- strptime(df_dispatch$TripStartDateTime, format='%m/%d/%y %H:%M')
+sqldf("SELECT * FROM df_dispatch
+LEFT OUTER JOIN df_gps
+ON  df_dispatch.AmbulanceNo =  df_gps.AmbulanceNo AND (df_dispatch.TripStartDateTime BETWEEN df_gps.TripStartDateTime - INTERVAL '15' MINUTE AND df_gps.TripStartDateTime + INTERVAL '15' MINUTE)")
+library(sqldf)
+library(RH2)
+library(sqldf)
+Sys.setenv(JAVA_HOME="/usr/bin/Java")
+library(RH2)
+Sys.setenv(JAVA_HOME="/usr/bin/Java")
+library(rJava)
+library(RH2)
