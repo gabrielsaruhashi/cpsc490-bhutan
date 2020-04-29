@@ -1,8 +1,5 @@
-# Log
-
-### Demand model
-
-We consider two time periods because emergency demand is known to follow a circadian rhythm (Bagai et al. 2013, McCormack and Coates 2015), meaning that demand is much higher during the day than at night. We consider two modes of transport because of the multi-modal nature of decentralized ambulance services in LMICs.
+# Acknowledgements
+A warm thank you for Dr. Sanjay Aneja for helping me so much this semester :)
 
 # Folder structure
 
